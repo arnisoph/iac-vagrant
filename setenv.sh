@@ -1,17 +1,24 @@
-[[ -e .env ]] && source .env
+_setenv() {
+  [[ -e ../.env ]] && source ../.env
+  [[ -e .env ]] && source .env
 
-if [[ -z "$box_name" ]]; then
-  formula_git_name="$(git rev-parse --show-toplevel)"
-  formula_git_name=${formula_git_name##*/}
-  export BOX_NAME=${formula_git_name}
+  if [[ -n "$box_name" ]]; then
+    export BOX_NAME=${box_name}
+  else
+    unset BOX_NAME
+  fi
+
+  if [[ -z "$box_base_path" ]]; then
+    export BOX_BASE_PATH=${box_base_path}
+  else
+    export BOX_BASE_PATH=${box_base_path}
+  fi
+
+  #BOX_PRIV_KEY=../../vagrant-devenv/shared/keys/id_rsa \
+}
+
+if [[ ! -f Vagrantfile ]]; then
+  echo "Not a vagrant dir, won't set any environment variables".
 else
-  export BOX_NAME=${box_name}
+  _setenv
 fi
-
-if [[ -z "$box_base_path" ]]; then
-  export BOX_BASE_PATH=${box_base_path}
-else
-  export BOX_BASE_PATH=${box_base_path}
-fi
-
-#BOX_PRIV_KEY=../../vagrant-devenv/shared/keys/id_rsa \
