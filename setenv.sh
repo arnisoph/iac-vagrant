@@ -14,6 +14,12 @@ _setenv() {
     export BOX_BASE_PATH=${box_base_path}
   fi
 
+  if [[ -z "$formula_dir" ]]; then
+    export FORMULA_DIR=TODO
+  else
+    export FORMULA_DIR=${formula_dir}
+  fi
+
   #BOX_PRIV_KEY=../../vagrant-devenv/shared/keys/id_rsa \
 }
 

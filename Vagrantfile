@@ -12,6 +12,8 @@ Vagrant.configure("2") do |config|
 
   box_name=ENV['BOX_NAME'] || 'vagrant'
   box_base_path=ENV['BOX_BASE_PATH']
+  formula_dir=ENV['FORMULA_DIR']
+
   #BOX_PRIV_KEY=ENV['BOX_PRIV_KEY']
 
   if ! box_base_path then
@@ -39,7 +41,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "../../../../github/salt-modules/_modules", "/vagrant/salt/_modules", disabled: false
   folders = ["_grains", "_modules", "_states", "contrib", "pillar", "states"]
   folders.each do |dir|
-    path = "../" + dir
+    path = formula_dir + "/" + dir
     if File.exists?(path) then
       config.vm.synced_folder path, "/vagrant/salt/formulas/" + box_name + "/" + dir, disabled: false
     end
