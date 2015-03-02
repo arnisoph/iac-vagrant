@@ -36,6 +36,8 @@ Vagrant.configure("2") do |cfg|
       config.vm.provider 'virtualbox' do |vb|
         vb.gui = false
         vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+        vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        vb.customize ['modifyvm', :id, '--hpet', 'on']
       end
 
       # Provision
@@ -48,15 +50,17 @@ Vagrant.configure("2") do |cfg|
           modules.each do |mod|
             folders = mod['folders'] || ['_grains', '_modules', '_states', 'contrib', 'pillar', 'states']
             folders.each do |folder|
-              path = mod['base_dir'] + '/' + folder
-              if File.exists?(path) then
-                config.vm.synced_folder(path, '/vagrant/salt/formulas/' + mod['name'] + '/' + folder)
+              src = mod['base_dir'] + '/' + folder
+              if File.exists?(src) then
+                dst = '/vagrant/salt/formulas/' + mod['name'] + '/' + folder
+                config.vm.synced_folder(src, dst)
               end
             end
 
-            path = mod['base_dir'] + '/' + mod['name']
-            if File.exists?(path) then
-              config.vm.synced_folder(path, '/vagrant/salt/formulas/' + mod['name'] + '/states')
+            src = mod['base_dir'] + '/' + mod['name']
+            if File.exists?(src) then
+              dst = '/vagrant/salt/formulas/' + mod['name'] + '/states'
+              config.vm.synced_folder(src, dst)
             end
           end
         else
