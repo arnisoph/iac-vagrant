@@ -80,7 +80,6 @@ Vagrant.configure("2") do |cfg|
           end
 
           config.vm.provision "shell", inline: 'find /vagrant/scripts/' + prov['name'] + '/ -name \'*.sh\' -exec {} \; &>> /var/tmp/vagrant-provision-' + prov['name'] + '.log'
-          config.vm.synced_folder "../../../../github/salt-modules/_modules", "/vagrant/salt/_modules", disabled: false
         else
           abort('Don\'t know provision type ' + prov['name'])
         end
