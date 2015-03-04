@@ -53,18 +53,17 @@ Vagrant.configure("2") do |cfg|
           formulas = prov['formulas'] || {}
           formulas.each do |mod|
             src = mod['base_dir'] + '/' + mod['name']
-
             if File.exists?(src) then
               dst = '/vagrant/salt/formulas/' + mod['name'] + '/states'
               config.vm.synced_folder(src, dst)
-            else
-              folders = mod['folders'] || ['_grains', '_modules', '_states', 'contrib', 'pillar', 'states']
-              folders.each do |folder|
-                src = mod['base_dir'] + '/' + folder
-                if File.exists?(src) then
-                  dst = '/vagrant/salt/formulas/' + mod['name'] + '/' + folder
-                  config.vm.synced_folder(src, dst)
-                end
+            end
+
+            folders = mod['folders'] || ['_grains', '_modules', '_states', 'contrib', 'pillar', 'states']
+            folders.each do |folder|
+              src = mod['base_dir'] + '/' + folder
+              if File.exists?(src) then
+                dst = '/vagrant/salt/formulas/' + mod['name'] + '/' + folder
+                config.vm.synced_folder(src, dst)
               end
             end
 
