@@ -11,8 +11,8 @@ require 'yaml'
 Vagrant.require_version ">= 1.6.5"
 
 Vagrant.configure("2") do |cfg|
-  if File.exists?('../nodes.yaml') then
-    nodes = YAML.load_file('../nodes.yaml')
+  if File.exists?(Dir.pwd + '/nodes.yaml') then
+    nodes = YAML.load_file(Dir.pwd + '/nodes.yaml')
     nodes.each do |vm_id, settings|
       cfg.vm.define(vm_id) do |config|
 
