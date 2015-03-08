@@ -11,6 +11,7 @@ cat << EOF > /etc/salt/minion
 file_roots:
   base:
     - /srv/salt/states
+    - /srv/salt/contrib/states
 
 pillar_roots:
   base:
@@ -22,6 +23,6 @@ module_dirs:
 file_client: local
 EOF
 
-mkdir -p /srv/salt/{_grains,_modules,_states,contrib,pillar,states}
+mkdir -p /srv/salt/{_grains,_modules,_states,contrib/states,pillar,states}
 
 service salt-minion restart

@@ -1,3 +1,14 @@
+cat > /srv/salt/pillar/top.sls <<EOF
+base:
+  '*':
+    - mysql.mariadb_galera
+    - salt.masterless
+EOF
+
+salt-call state.sls salt.minion,repos,percona.tools,mysql.server test=False
+
+service mysql start --wsrep-new-cluster
+
 mysql -u root --password=yoursecurepassword42 -e 'CREATE DATABASE playground;'
 mysql -u root --password=yoursecurepassword42 -e 'CREATE TABLE playground.equipment ( id INT NOT NULL AUTO_INCREMENT, type VARCHAR(50), quant INT, color VARCHAR(25), PRIMARY KEY(id));'
 mysql -u root --password=yoursecurepassword42 -e 'INSERT INTO playground.equipment (type, quant, color) VALUES ("slide", 2, "blue");'

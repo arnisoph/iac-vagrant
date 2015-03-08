@@ -3,3 +3,5 @@ base:
     - salt.masterless
 
 salt-call state.sls salt.minion,repos
+
+mkdir -p /srv/salt/{_grains,_modules,_states,contrib/states,pillar,states}

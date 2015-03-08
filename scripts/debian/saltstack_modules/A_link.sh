@@ -9,6 +9,10 @@ for d in /vagrant/salt/formulas/*; do
   dst=/srv/salt/states/${d##*/}
   [[ -e $src && ! -e $dst ]] && ln -s $src $dst
 
+  src=${d}/contrib/states
+  dst=/srv/salt/contrib/states/${d##*/}
+  [[ -e $src && ! -e $dst ]] && ln -s $src $dst
+
   src=${d}/pillar_examples
   dst=/srv/salt/pillar/${d##*/}
   [[ -e $src && ! -e $dst ]] && ln -s $src $dst
