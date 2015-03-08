@@ -63,7 +63,7 @@ Vagrant.configure('2') do |cfg|
               config.vm.synced_folder(src, dst)
             end
 
-            folders = mod['folders'] || ['_grains', '_modules', '_states', 'contrib', 'pillar', 'states']
+            folders = mod['folders'] || ['_grains', '_modules', '_states', 'contrib', 'pillar_examples', 'states']
             folders.each do |folder|
               src = mod['base_dir'] + '/' + folder
               if File.exists?(src) then
