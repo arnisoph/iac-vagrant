@@ -1,0 +1,6 @@
+mysql -u root --password=yoursecurepassword42 -e 'CREATE DATABASE playground;'
+mysql -u root --password=yoursecurepassword42 -e 'CREATE TABLE playground.equipment ( id INT NOT NULL AUTO_INCREMENT, type VARCHAR(50), quant INT, color VARCHAR(25), PRIMARY KEY(id));'
+mysql -u root --password=yoursecurepassword42 -e 'INSERT INTO playground.equipment (type, quant, color) VALUES ("slide", 2, "blue");'
+mysql -u root --password=yoursecurepassword42 -e 'SELECT * FROM playground.equipment;'
+
+watch -d -n1 -x mysql -B --password=yoursecurepassword42 -e "SHOW STATUS WHERE variable_name ='wsrep_local_state_comment' OR variable_name ='wsrep_cluster_size' OR variable_name ='wsrep_incoming_addresses' OR variable_name ='wsrep_cluster_status' OR variable_name ='wsrep_connected' OR variable_name ='wsrep_ready' OR variable_name ='wsrep_local_state_uuid' OR variable_name ='wsrep_cluster_state_uuid';"
