@@ -11,9 +11,9 @@ require 'yaml'
 Vagrant.require_version '>= 1.6.5'
 
 Vagrant.configure('2') do |cfg|
-  nodes_yaml_path = Dir.pwd + '/nodes.yaml'
-  if File.exists?(Dir.pwd + '/../nodes.yaml') then
-    nodes_yaml_path = Dir.pwd + '/../nodes.yaml'
+  nodes_yaml_path = File.dirname(__FILE__) + '/nodes.yaml'
+  if File.exists?(File.dirname(__FILE__) + '/../nodes.yaml') then
+    nodes_yaml_path = File.dirname(__FILE__) + '/../nodes.yaml'
   end
 
   nodes = YAML.load_file(nodes_yaml_path)
