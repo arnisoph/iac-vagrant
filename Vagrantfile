@@ -84,15 +84,15 @@ Vagrant.configure('2') do |cfg|
             #  end
             #end
 
-            if prov.has_key?('modules_custom') then
-              config.vm.synced_folder(prov['modules_custom'], '/vagrant/salt/_modules')
-            end
-
             #src = mod['base_dir']
             #if File.exists?(src) then
             #  dst = '/vagrant/salt/formulas/' + mod['name']
             #  config.vm.synced_folder(src, dst)
             #end
+          end
+
+          if prov.has_key?('modules_custom') then
+            config.vm.synced_folder(prov['modules_custom'], '/vagrant/salt/_modules')
           end
 
           config.vm.provision 'shell', inline: 'find /vagrant/scripts/' + prov['name'] + '/ -name \'*.sh\' -exec {} \; &>> /var/tmp/vagrant-provision-' + prov['name'] + '.log'
