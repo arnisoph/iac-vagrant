@@ -4,7 +4,7 @@ defaults:
   provision:
     - name: basic
     - name: saltstack_setup
-    - name: saltstack_modules
+    - name: saltstack_prepare
       modules_custom: ../../../salt-modules/_modules
       formulas:
         - name: skeleton
