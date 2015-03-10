@@ -16,9 +16,10 @@ Vagrant.configure('2') do |cfg|
     nodes_yaml_path = File.dirname(__FILE__) + '/../nodes.yaml'
   end
 
-  nodes = YAML.load_file(nodes_yaml_path)
-  nodes.each do |vm_id, settings|
+  config_yaml = YAML.load_file(nodes_yaml_path)
+  config_yaml['nodes'].each do |vm_id, settings|
     cfg.vm.define(vm_id) do |config|
+      domain = config_yaml['defaults']['domain'] || settings['domain']
 
       if settings.has_key?('enable') and settings['enable'] != true then
         next
@@ -26,7 +27,7 @@ Vagrant.configure('2') do |cfg|
 
       config.vm.box = settings['base_box']
       config.vm.box_url = 'file://' + __dir__ + '/' + settings['base_box_basedir'] + '/' + settings['base_box']
-      config.vm.host_name = vm_id + '.' + settings['domain']
+      config.vm.host_name = vm_id + '.' + domain
       config.vm.network 'public_network', bridge: 'en4: Display Ethernet'
       config.vm.synced_folder('scripts/debian', '/vagrant/scripts')
       #config.ssh.private_key_path = BOX_PRIV_KEY.split(',')
@@ -46,9 +47,11 @@ Vagrant.configure('2') do |cfg|
       end
 
       # Provision
-      provision = settings['provision'].each || []
-      provision.each do |prov|
+      global_provision = config_yaml['defaults']['provision'] || []
+      provision = settings['provision'] || []
+      provision.concat(global_provision)
 
+      provision.each do |prov|
         case(prov['name'])
         when 'basic'
           config.vm.provision 'shell', inline: 'find /vagrant/scripts/' + prov['name'] + '/ -name \'*.sh\' -exec {} \; 1>> /var/tmp/vagrant-provision-' + prov['name'] + '.log'
