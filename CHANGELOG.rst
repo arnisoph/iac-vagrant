@@ -1,5 +1,6 @@
 [Unreleased] ([unreleased])
 ---------------------------
+* configure synced folders on node level
 * accept global defaults (provision settings) in nodes.yaml.dist
 * added CHANGELOG
 * initial release

@@ -19,17 +19,20 @@ Vagrant.configure('2') do |cfg|
   config_yaml = YAML.load_file(nodes_yaml_path)
   config_yaml['nodes'].each do |vm_id, settings|
     cfg.vm.define(vm_id) do |config|
-      domain = config_yaml['defaults']['domain'] || settings['domain']
-
       if settings.has_key?('enable') and settings['enable'] != true then
         next
       end
+
+      domain = config_yaml['defaults']['domain'] || settings['domain']
+      synced_folders = [{'src' => 'scripts/debian', 'dst' => '/vagrant/scripts'}].concat(settings['synced_folders'] || [])
 
       config.vm.box = settings['base_box']
       config.vm.box_url = 'file://' + __dir__ + '/' + settings['base_box_basedir'] + '/' + settings['base_box']
       config.vm.host_name = vm_id + '.' + domain
       config.vm.network 'public_network', bridge: 'en4: Display Ethernet'
-      config.vm.synced_folder('scripts/debian', '/vagrant/scripts')
+      synced_folders.each do |folder|
+        config.vm.synced_folder(folder['src'], folder['dst'])
+      end
       #config.ssh.private_key_path = BOX_PRIV_KEY.split(',')
 
 
