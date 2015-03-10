@@ -66,7 +66,7 @@ Vagrant.configure('2') do |cfg|
           config.vm.provision 'shell', inline: 'find /vagrant/scripts/' + prov['name'] + '/ -name \'*.sh\' -exec {} \; 1>> /var/tmp/vagrant-provision-' + prov['name'] + '.log'
         when 'saltstack_setup'
           config.vm.provision 'shell', inline: 'find /vagrant/scripts/' + prov['name'] + '/ -name \'*.sh\' -exec {} \; &>> /var/tmp/vagrant-provision-' + prov['name'] + '.log'
-        when 'saltstack_modules', 'saltstack_minion', 'saltstack_master'
+        when 'saltstack_prepare'
           formulas = prov['formulas'] || {}
           formulas.each do |mod|
             src = mod['base_dir'] #+ '/' + mod['name']
