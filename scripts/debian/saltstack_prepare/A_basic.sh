@@ -10,35 +10,45 @@ minion_config_path=/vagrant/share/salt-config/${HOSTNAME}/config/minion
 master_config_path=/vagrant/share/salt-config/${HOSTNAME}/config/master
 states_top_path=/vagrant/share/salt-config/${HOSTNAME}/file_roots/states/top.sls
 pillar_top_path=/vagrant/share/salt-config/${HOSTNAME}/file_roots/pillar/top.sls
-mkdir -p /srv/salt/states/
-mkdir -p /srv/salt/contrib/states/
-mkdir -p /srv/salt/pillar/examples/
+
+mkdir -p /srv/salt/{_grains,_modules/formulas,_states,contrib/states,pillar/examples,states,}
 
 [[ -f $states_top_path ]] && cp $states_top_path /srv/salt/states/
 [[ -f $pillar_top_path ]] && cp $pillar_top_path /srv/salt/pillar/
 [[ -f $minion_config_path ]] && cp $minion_config_path /etc/salt/
 [[ -f $master_config_path ]] && cp $master_config_path /etc/salt/
 
-for d in /vagrant/salt/formulas/*; do
-  if [[ -d ${d}/states ]]; then
-    src=${d}/states
-    dst=/srv/salt/states/${d##*/}
-  else
-    src=${d}/${d##*/}
-    dst=/srv/salt/states/${d##*/}
-  fi
-  if [[ -e $src && ! -e $dst ]]; then ln -s $src $dst || exit 1; fi
+if [[ -d /vagrant/salt/formulas/ ]]; then
+  for d in /vagrant/salt/formulas/*; do
+    if [[ -d ${d}/states ]]; then
+      src=${d}/states
+      dst=/srv/salt/states/${d##*/}
+    else
+      src=${d}/${d##*/}
+      dst=/srv/salt/states/${d##*/}
+    fi
+    if [[ -e $src && ! -e $dst ]]; then ln -s $src $dst || exit 1; fi
 
-  if [[ -d ${d}/contrib/states ]]; then
-    src=${d}/contrib/states
-    dst=/srv/salt/contrib/states/${d##*/}
-  fi
-  if [[ -e $src && ! -e $dst ]]; then ln -s $src $dst || exit 1; fi
+    if [[ -d ${d}/contrib/states ]]; then
+      src=${d}/contrib/states
+      dst=/srv/salt/contrib/states/${d##*/}
+    fi
+    if [[ -e $src && ! -e $dst ]]; then ln -s $src $dst || exit 1; fi
 
-  src=${d}/pillar_examples
-  dst=/srv/salt/pillar/examples/${d##*/}
-  if [[ -e $src && ! -e $dst ]]; then ln -s $src $dst || exit 1; fi
-done
+    src=${d}/pillar_examples
+    dst=/srv/salt/pillar/examples/${d##*/}
+    if [[ -e $src && ! -e $dst ]]; then ln -s $src $dst || exit 1; fi
 
-find /vagrant/salt/formulas/ -path '*/_modules/*' -not -path '*/.git/*' -type f -name '*.py' -print -exec cp {} /srv/salt/_modules/ \; || exit 1 #TODO move to loop
-if [[ -d /vagrant/salt/_modules/ ]]; then find /vagrant/salt/_modules/ -type f -name '*.py' -exec cp {} /srv/salt/_modules/ \; || exit 1; fi
+    src=${d}/_modules
+    dst=/srv/salt/_modules/formulas/${f##*/}
+    if [[ -d $src ]]; then
+      find $d -type f -name '*.py' -exec ln -sf {} $dst \; || exit 1
+    fi
+  done
+fi
+
+if [[ -d /vagrant/salt/_modules/ ]]; then
+  src=/vagrant/salt/_modules/
+  dst=/srv/salt/_modules/common
+  if [[ -e $src && ! -e $dst ]]; then ln -s $src $dst || exit 1; fi
+fi
