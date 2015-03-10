@@ -8,6 +8,8 @@
 #
 require 'yaml'
 
+# TODO add function that returns value based on global default and node-specific setting
+
 Vagrant.require_version '>= 1.6.5'
 
 Vagrant.configure('2') do |cfg|
@@ -24,12 +26,16 @@ Vagrant.configure('2') do |cfg|
       end
 
       domain = config_yaml['defaults']['domain'] || settings['domain']
-      synced_folders = [{'src' => 'scripts/debian', 'dst' => '/vagrant/scripts'}].concat(settings['synced_folders'] || [])
+      synced_folders = config_yaml['defaults']['synced_folders'].concat(settings['synced_folders'] || [])
 
       config.vm.box = settings['base_box']
       config.vm.box_url = 'file://' + __dir__ + '/' + settings['base_box_basedir'] + '/' + settings['base_box']
       config.vm.host_name = vm_id + '.' + domain
-      config.vm.network 'public_network', bridge: 'en4: Display Ethernet'
+      if settings.has_key?('ip') then
+        config.vm.network 'private_network', ip: settings['ip']
+      else
+        config.vm.network 'private_network', type: 'dhcp'
+      end
       synced_folders.each do |folder|
         config.vm.synced_folder(folder['src'], folder['dst'])
       end
