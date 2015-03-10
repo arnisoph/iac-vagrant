@@ -9,12 +9,12 @@ set -x
 minion_config_path=/vagrant/share/salt-config/${HOSTNAME}/config/minion
 master_config_path=/vagrant/share/salt-config/${HOSTNAME}/config/master
 states_top_path=/vagrant/share/salt-config/${HOSTNAME}/file_roots/states/top.sls
-pillar_top_path=/vagrant/share/salt-config/${HOSTNAME}/file_roots/pillar/top.sls
+pillar_root=/vagrant/share/salt-config/${HOSTNAME}/file_roots/pillar/
 
-mkdir -p /srv/salt/{_grains,_modules/formulas,_states,contrib/states,pillar/examples,states,}
+mkdir -p /srv/salt/{_grains,_modules/formulas,_states,contrib/states,pillar/examples,states}
 
 [[ -f $states_top_path ]] && cp $states_top_path /srv/salt/states/
-[[ -f $pillar_top_path ]] && cp $pillar_top_path /srv/salt/pillar/
+[[ -d $pillar_root && ! -e /srv/salt/pillar/share ]] && ln -sf $pillar_root /srv/salt/pillar/share
 [[ -f $minion_config_path ]] && cp $minion_config_path /etc/salt/
 [[ -f $master_config_path ]] && cp $master_config_path /etc/salt/
 
