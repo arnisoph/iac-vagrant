@@ -23,6 +23,4 @@ module_dirs:
 file_client: local
 EOF
 
-mkdir -p /srv/salt/{_grains,_modules,_states,contrib/states,pillar,states}
-
 service salt-minion restart
