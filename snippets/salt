@@ -5,3 +5,6 @@ base:
 salt-call state.sls salt.minion,repos
 
 mkdir -p /srv/salt/{_grains,_modules,_states,contrib/states,pillar,states}
+
+
+rsync -va --exclude=.git/ --exclude=test/vagrant/ --exclude=.gitmodules ~/Documents/dev/github/saltstack-skeleton-formula/ ~/Documents/dev/github/saltstack-quobyte-formula/
