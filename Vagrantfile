@@ -26,7 +26,8 @@ Vagrant.configure('2') do |cfg|
       end
 
       domain = config_yaml['defaults']['domain'] || settings['domain']
-      synced_folders = config_yaml['defaults']['synced_folders'].concat(settings['synced_folders'] || [])
+      synced_folders = config_yaml['defaults']['synced_folders'] || []
+      synced_folders.concat(settings['synced_folders'] || [])
 
       config.vm.box = settings['base_box']
       config.vm.box_url = 'file://' + __dir__ + '/' + settings['base_box_basedir'] + '/' + settings['base_box']
