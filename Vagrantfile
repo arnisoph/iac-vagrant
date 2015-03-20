@@ -14,14 +14,14 @@ Vagrant.require_version '>= 1.6.5'
 
 Vagrant.configure('2') do |cfg|
   nodes_yaml_path = File.dirname(__FILE__) + '/nodes.yaml'
-  if File.exists?(File.dirname(__FILE__) + '/../nodes.yaml') then
+  if File.exists?(File.dirname(__FILE__) + '/../nodes.yaml')
     nodes_yaml_path = File.dirname(__FILE__) + '/../nodes.yaml'
   end
 
   config_yaml = YAML.load_file(nodes_yaml_path)
   config_yaml['nodes'].each do |vm_id, settings|
     cfg.vm.define(vm_id) do |config|
-      if settings.has_key?('enable') and settings['enable'] != true then
+      if settings.has_key?('enable') and settings['enable'] != true
         next
       end
 
@@ -32,7 +32,7 @@ Vagrant.configure('2') do |cfg|
       config.vm.box = settings['base_box']
       config.vm.box_url = 'file://' + __dir__ + '/' + settings['base_box_basedir'] + '/' + settings['base_box']
       config.vm.host_name = vm_id + '.' + domain
-      if settings.has_key?('ip') then
+      if settings.has_key?('ip')
         config.vm.network 'private_network', ip: settings['ip']
       else
         config.vm.network 'private_network', type: 'dhcp'
@@ -71,7 +71,7 @@ Vagrant.configure('2') do |cfg|
           formulas = prov['formulas'] || {}
           formulas.each do |mod|
             src = mod['base_dir'] #+ '/' + mod['name']
-            if File.exists?(src) then
+            if File.exists?(src)
               dst = '/vagrant/salt/formulas/' + mod['name']
               config.vm.synced_folder(src, dst)
             end
@@ -79,20 +79,20 @@ Vagrant.configure('2') do |cfg|
             #folders = mod['folders'] || ['_grains', '_modules', '_states', 'contrib', 'pillar_examples', 'states']
             #folders.each do |folder|
             #  src = mod['base_dir'] + '/' + folder
-            #  if File.exists?(src) then
+            #  if File.exists?(src)
             #    dst = '/vagrant/salt/formulas/' + mod['name'] + '/' + folder
             #    config.vm.synced_folder(src, dst)
             #  end
             #end
 
             #src = mod['base_dir']
-            #if File.exists?(src) then
+            #if File.exists?(src)
             #  dst = '/vagrant/salt/formulas/' + mod['name']
             #  config.vm.synced_folder(src, dst)
             #end
           end
 
-          if prov.has_key?('modules_custom') then
+          if prov.has_key?('modules_custom')
             config.vm.synced_folder(prov['modules_custom'], '/vagrant/salt/_modules')
           end
 
