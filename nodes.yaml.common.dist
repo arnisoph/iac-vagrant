@@ -2,7 +2,7 @@
 defaults:
   domain: iacvagrant.local.arnoldbechtoldt.com
   synced_folders:
-    - src: scripts/debian #TODO <= shouldn't this be osfam-agnostic?
+    - src: assets/scripts/provision/debian #TODO <= shouldn't this be osfam-agnostic?
       dst: /vagrant/scripts
   provision:
     - name: basic

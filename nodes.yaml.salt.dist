@@ -2,18 +2,18 @@
 defaults:
   domain: iacvagrant.local.arnoldbechtoldt.com
   synced_folders:
-    - src: scripts/debian #TODO <= shouldn't this be osfam-agnostic?
+    - src: assets/scripts/provision/debian #TODO <= shouldn't this be osfam-agnostic?
       dst: /vagrant/scripts
   provision:
     - name: basic
-    - name: saltstack_setup
-    - name: saltstack_prepare
-      modules_custom: ../../../salt-modules/_modules
-      formulas:
-        - name: skeleton
-          base_dir: ../..
-        - name: network
-          base_dir: ../../../saltstack-network-formula
+#    - name: saltstack_setup
+#    - name: saltstack_prepare
+#      modules_custom: ../../../salt-modules/_modules
+#      formulas:
+#        - name: skeleton
+#          base_dir: ../..
+#        - name: network
+#          base_dir: ../../../saltstack-network-formula
 nodes:
   client1:
     base_box: DEV_Debian_78_min-virtualbox-v0.3-9-gdba595d.box
