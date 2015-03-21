@@ -1,5 +1,6 @@
 [Unreleased] ([unreleased])
 ---------------------------
+* support rex git install
 * improve provisioning
 * add assets git module
 

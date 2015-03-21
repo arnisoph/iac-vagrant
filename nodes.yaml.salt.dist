@@ -6,7 +6,9 @@ defaults:
   osfam: debian
   synced_folders:
     - src: assets/scripts/provision/
-      dst: /vagrant/scripts
+      dst: /vagrant/scripts/
+    - src: ../salt/
+      dst: /vagrant/src/salt/
   provision:
     - name: basic
 #    - name: saltstack_install #TODO?
