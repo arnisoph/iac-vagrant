@@ -9,7 +9,7 @@ defaults:
       dst: /vagrant/scripts
   provision:
     - name: basic
-#    - name: saltstack_setup
+#    - name: saltstack_install #TODO?
     - name: saltstack_formulas
       modules_custom: ../../../salt-modules/_modules
       formulas:
