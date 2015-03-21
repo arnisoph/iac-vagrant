@@ -8,7 +8,9 @@
 #
 require 'yaml'
 
-# TODO add function that returns value based on global default and node-specific setting
+def get(key, global, node)
+  node[key] || global['defaults'][key]
+end
 
 Vagrant.require_version '>= 1.6.5'
 
@@ -25,13 +27,15 @@ Vagrant.configure('2') do |cfg|
         next
       end
 
-      domain = config_yaml['defaults']['domain'] || settings['domain']
+      domain = get('domain', config_yaml, settings)
+      base_box = get('base_box', config_yaml, settings)
+      base_box_basedir = get('base_box_basedir', config_yaml, settings)
       synced_folders = config_yaml['defaults']['synced_folders'] || []
       synced_folders.concat(settings['synced_folders'] || [])
-      osfam = settings['osfam'] || 'debian'
+      osfam = get('osfam', config_yaml, settings)
 
-      config.vm.box = settings['base_box']
-      config.vm.box_url = 'file://' + __dir__ + '/' + settings['base_box_basedir'] + '/' + settings['base_box']
+      config.vm.box = base_box
+      config.vm.box_url = 'file://' + __dir__ + '/' + base_box_basedir + '/' + base_box
       config.vm.host_name = vm_id + '.' + domain
       if settings.has_key?('ip')
         config.vm.network 'private_network', ip: settings['ip']
@@ -39,9 +43,11 @@ Vagrant.configure('2') do |cfg|
         config.vm.network 'private_network', type: 'dhcp'
       end
       synced_folders.each do |folder|
+        if folder['dst'].match(/\/scripts\/?$/)
+          folder['src'] += '/' + osfam
+        end
         config.vm.synced_folder(folder['src'], folder['dst'])
       end
-      #config.ssh.private_key_path = BOX_PRIV_KEY.split(',')
 
 
       # Plugins
@@ -79,11 +85,11 @@ Vagrant.configure('2') do |cfg|
           end
         end
 
-        prov_script = '/tmp/vagrant-provision-' + prov['name'] + '.sh $@'
-        config.vm.provision 'file', source: 'assets/scripts/provision/provision.sh', destination: prov_script
-        config.vm.provision 'shell', inline: prov_script, args: prov['name']
+        src = 'assets/scripts/provision/provision.sh'
+        dst = '/tmp/vagrant-provision-' + prov['name'] + '.sh $@'
+        config.vm.provision 'file', source: src, destination: dst
+        config.vm.provision 'shell', inline: dst, args: [ prov['name'], osfam ]
       end
-
     end
   end
 end
