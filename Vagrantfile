@@ -28,6 +28,7 @@ Vagrant.configure('2') do |cfg|
       domain = config_yaml['defaults']['domain'] || settings['domain']
       synced_folders = config_yaml['defaults']['synced_folders'] || []
       synced_folders.concat(settings['synced_folders'] || [])
+      osfam = settings['osfam'] || 'debian'
 
       config.vm.box = settings['base_box']
       config.vm.box_url = 'file://' + __dir__ + '/' + settings['base_box_basedir'] + '/' + settings['base_box']
@@ -63,43 +64,24 @@ Vagrant.configure('2') do |cfg|
 
       provision.each do |prov|
         case(prov['name'])
-        when 'basic'
-          config.vm.provision 'shell', inline: 'find /vagrant/scripts/' + prov['name'] + '/ -name \'*.sh\' -exec {} \; 1>> /var/tmp/vagrant-provision-' + prov['name'] + '.log'
-        when 'saltstack_setup'
-          config.vm.provision 'shell', inline: 'find /vagrant/scripts/' + prov['name'] + '/ -name \'*.sh\' -exec {} \; &>> /var/tmp/vagrant-provision-' + prov['name'] + '.log'
-        when 'saltstack_prepare'
+        when 'saltstack_formulas'
           formulas = prov['formulas'] || {}
           formulas.each do |mod|
-            src = mod['base_dir'] #+ '/' + mod['name']
+            src = mod['base_dir']
             if File.exists?(src)
               dst = '/vagrant/salt/formulas/' + mod['name']
               config.vm.synced_folder(src, dst)
             end
-
-            #folders = mod['folders'] || ['_grains', '_modules', '_states', 'contrib', 'pillar_examples', 'states']
-            #folders.each do |folder|
-            #  src = mod['base_dir'] + '/' + folder
-            #  if File.exists?(src)
-            #    dst = '/vagrant/salt/formulas/' + mod['name'] + '/' + folder
-            #    config.vm.synced_folder(src, dst)
-            #  end
-            #end
-
-            #src = mod['base_dir']
-            #if File.exists?(src)
-            #  dst = '/vagrant/salt/formulas/' + mod['name']
-            #  config.vm.synced_folder(src, dst)
-            #end
           end
 
           if prov.has_key?('modules_custom')
             config.vm.synced_folder(prov['modules_custom'], '/vagrant/salt/_modules')
           end
-
-          config.vm.provision 'shell', inline: 'find /vagrant/scripts/' + prov['name'] + '/ -name \'*.sh\' -exec {} \; &>> /var/tmp/vagrant-provision-' + prov['name'] + '.log'
-        else
-          abort('Don\'t know provision type ' + prov['name'])
         end
+
+        prov_script = '/tmp/vagrant-provision-' + prov['name'] + '.sh $@'
+        config.vm.provision 'file', source: 'assets/scripts/provision/provision.sh', destination: prov_script
+        config.vm.provision 'shell', inline: prov_script, args: prov['name']
       end
 
     end
