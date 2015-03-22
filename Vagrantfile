@@ -37,11 +37,17 @@ Vagrant.configure('2') do |cfg|
       config.vm.box = base_box
       config.vm.box_url = 'file://' + __dir__ + '/' + base_box_basedir + '/' + base_box
       config.vm.host_name = vm_id + '.' + domain
+
+      # Networking
+      #config.vm.network :forwarded_port, guest: 22, host: 2222 #TODO make this configurable
+
       if settings.has_key?('ip')
         config.vm.network 'private_network', ip: settings['ip']
       else
         config.vm.network 'private_network', type: 'dhcp'
       end
+
+      # Folders/ Sharing
       synced_folders.each do |folder|
         if folder['dst'].match(/\/scripts\/?$/)
           folder['src'] += '/' + osfam
@@ -63,7 +69,7 @@ Vagrant.configure('2') do |cfg|
         vb.customize ['modifyvm', :id, '--hpet', 'on']
       end
 
-      # Provision
+      # Provision #TODO merge is not working at the moment (ordering broken) concat => push?
       global_provision = config_yaml['defaults']['provision'] || []
       provision = settings['provision'] || []
       provision.concat(global_provision)
