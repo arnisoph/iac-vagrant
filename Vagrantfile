@@ -85,10 +85,6 @@ Vagrant.configure('2') do |cfg|
               config.vm.synced_folder(src, dst)
             end
           end
-
-          if prov.has_key?('modules_custom')
-            config.vm.synced_folder(prov['modules_custom'], '/vagrant/salt/_modules')
-          end
         end
 
         src = 'assets/scripts/provision/provision.sh'
