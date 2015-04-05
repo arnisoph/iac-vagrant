@@ -41,7 +41,7 @@ Vagrant.configure('2') do |cfg|
       if base_box_basedir
         config.vm.box_url = 'file://' + __dir__ + '/' + base_box_basedir + '/' + base_box
       elsif base_box_url
-        config.vm.box_url = base_box_basedir
+        config.vm.box_url = base_box_url
       end
 
       # Networking
