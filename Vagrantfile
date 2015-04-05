@@ -9,7 +9,7 @@
 require 'yaml'
 
 def get(key, global, node)
-  node[key] || global['defaults'][key]
+  node[key] || global['defaults'][key] || nil
 end
 
 Vagrant.require_version '>= 1.6.5'
@@ -29,14 +29,20 @@ Vagrant.configure('2') do |cfg|
 
       domain = get('domain', config_yaml, settings)
       base_box = get('base_box', config_yaml, settings)
-      base_box_basedir = get('base_box_basedir', config_yaml, settings)
       synced_folders = config_yaml['defaults']['synced_folders'] || []
       synced_folders.concat(settings['synced_folders'] || [])
       osfam = get('osfam', config_yaml, settings)
 
       config.vm.box = base_box
-      config.vm.box_url = 'file://' + __dir__ + '/' + base_box_basedir + '/' + base_box
       config.vm.host_name = vm_id + '.' + domain
+
+      base_box_basedir = get('base_box_basedir', config_yaml, settings)
+      base_box_url = get('base_box_url', config_yaml, settings)
+      if base_box_basedir
+        config.vm.box_url = 'file://' + __dir__ + '/' + base_box_basedir + '/' + base_box
+      elsif base_box_url
+        config.vm.box_url = base_box_basedir
+      end
 
       # Networking
       #config.vm.network :forwarded_port, guest: 22, host: 2222 #TODO make this configurable
