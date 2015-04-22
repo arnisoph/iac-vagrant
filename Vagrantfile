@@ -5,6 +5,7 @@
 #
 # * vagrant-notify
 # * cachier
+# * vagrant-vbguest
 #
 require 'yaml'
 
