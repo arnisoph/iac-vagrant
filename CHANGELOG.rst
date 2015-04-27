@@ -1,6 +1,6 @@
 [Unreleased] ([unreleased])
 ---------------------------
-None
+* disable default synced folder
 
 v1.0.0 (2015-04-22)
 -------------------

@@ -55,6 +55,7 @@ Vagrant.configure('2') do |cfg|
       end
 
       # Folders/ Sharing
+      config.vm.synced_folder '.', '/vagrant', disabled: true
       synced_folders.each do |folder|
         if folder['dst'].match(/\/scripts\/?$/)
           folder['src'] += '/' + osfam
