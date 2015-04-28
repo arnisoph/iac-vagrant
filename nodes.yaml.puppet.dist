@@ -1,0 +1,19 @@
+---
+defaults:
+  domain: puppet.local.arnoldbechtoldt.com
+  base_box: DEV_Debian_78_salt_arbe_git-virtualbox-v0.4-4-gc6b98de.box
+  base_box_basedir: ../../../vagrant-devenv/shared/boxes
+  osfam: debian
+  synced_folders:
+    - src: assets/scripts/provision/
+      dst: /vagrant/scripts
+    - src: ../share/misc/
+      dst: /vagrant/share/misc
+    - src: ../share/puppet/
+      dst: /vagrant/share/puppet
+  provision:
+    - name: basic
+    - name: puppet_install_dist
+    - name: puppet_provision
+nodes:
+  client1: {}
