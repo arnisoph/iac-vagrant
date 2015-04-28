@@ -4,7 +4,7 @@
 # Useful vagrant plugins:
 #
 # * vagrant-notify
-# * cachier
+# * vagrant-cachier
 # * vagrant-vbguest
 #
 require 'yaml'
