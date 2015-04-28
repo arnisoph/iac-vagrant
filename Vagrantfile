@@ -75,6 +75,7 @@ Vagrant.configure('2') do |cfg|
         #vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
         #vb.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
         vb.customize ['modifyvm', :id, '--hpet', 'on']
+        vb.customize ['modifyvm', :id, '--ioapic', 'on']
 
         cpus = get('cpus', config_yaml, settings)
         vb.cpus = cpus if cpus
