@@ -75,6 +75,11 @@ Vagrant.configure('2') do |cfg|
         #vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
         #vb.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
         vb.customize ['modifyvm', :id, '--hpet', 'on']
+
+        cpus = get('cpus', config_yaml, settings)
+        vb.cpus = cpus if cpus
+        memory = get('memory', config_yaml, settings)
+        vb.memory = memory if memory
       end
 
       # Provision #TODO merge is not working at the moment (ordering broken) concat => push?
