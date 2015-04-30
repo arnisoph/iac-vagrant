@@ -9,5 +9,7 @@ defaults:
       dst: /vagrant/scripts/
   provision:
     - name: basic
+      env:
+        update_dist: true
 nodes:
   client1: {}
