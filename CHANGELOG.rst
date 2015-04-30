@@ -2,6 +2,7 @@
 ---------------------------
 * disable default synced folder
 * manage cpus & memory
+* provide env vars for provision scripts
 
 v1.0.0 (2015-04-22)
 -------------------
