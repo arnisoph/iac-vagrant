@@ -5,8 +5,8 @@ defaults:
   #base_box_url: https://atlas.hashicorp.com/chef/boxes/centos-6.5/versions/1.0.0/providers/virtualbox.box
   osfam: rhel
   synced_folders:
-    - src: assets/scripts/provision/
-      dst: /vagrant/scripts/
+    - src: assets/scripts/provision
+      dst: /vagrant/scripts
   provision:
     - name: basic
 nodes:

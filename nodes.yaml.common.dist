@@ -5,8 +5,31 @@ defaults:
   base_box_basedir: ../../../vagrant-devenv/shared/boxes
   osfam: debian
   synced_folders:
-    - src: assets/scripts/provision/
-      dst: /vagrant/scripts/
+    # Common folders
+    - src: assets/scripts/provision
+      dst: /vagrant/scripts
+    - src: ../shared/misc
+      dst: /vagrant/shared/misc
+
+    # Salt related folders
+    #- src: ../shared/salt/devenv
+    #  dst: /vagrant/shared/salt/devenv
+    #- src: ../../github/salt
+    #  dst: /vagrant/src/salt
+    #- src: ../../../salt-modules/_modules
+    #  dst: /vagrant/salt/_modules
+    #- src: ../../../salt-modules/_states
+    #  dst: /vagrant/salt/_states
+
+    # Puppet related folders
+    #- src: ../shared/puppet/
+    #  dst: /vagrant/shared/puppet
+    #- src: ../../../<project>/puppet/modules
+    #  dst: /vagrant/shared/modules_ext
+
+    # Rex related folders
+    - src: ../../github/rex/
+      dst: /vagrant/src/rex/
   provision:
     - name: basic
       env:

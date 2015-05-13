@@ -5,12 +5,8 @@ defaults:
   base_box_basedir: ../../../vagrant-devenv/shared/boxes
   osfam: debian
   synced_folders:
-    - src: assets/scripts/provision/
+    - src: assets/scripts/provision
       dst: /vagrant/scripts
-    - src: ../share/misc/
-      dst: /vagrant/share/misc
-    - src: ../share/puppet/
-      dst: /vagrant/share/puppet
   provision:
     - name: basic
     - name: puppet_install_dist

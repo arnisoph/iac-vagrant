@@ -5,10 +5,8 @@ defaults:
   base_box_basedir: ../../../vagrant-devenv/shared/boxes
   osfam: debian
   synced_folders:
-    - src: assets/scripts/provision/
-      dst: /vagrant/scripts/
-    - src: ../../github/rex/
-      dst: /vagrant/src/rex/
+    - src: assets/scripts/provision
+      dst: /vagrant/scripts
   provision:
     - name: basic
     - name: rex_install_git
