@@ -22,14 +22,16 @@ defaults:
     #  dst: /vagrant/salt/_states
 
     # Puppet related folders
-    #- src: ../shared/puppet/
+    #- src: ../shared/puppet
     #  dst: /vagrant/shared/puppet
     #- src: ../../../<project>/puppet/modules
-    #  dst: /vagrant/shared/modules_ext
+    #  dst: /vagrant/shared/puppet_modules_ext
+    #- src: ../../../<project>/puppet-data
+    #  dst: /vagrant/shared/puppet_hiera_ext
 
     # Rex related folders
-    - src: ../../github/rex/
-      dst: /vagrant/src/rex/
+    - src: ../../github/rex
+      dst: /vagrant/src/rex
   provision:
     - name: basic
       env:
