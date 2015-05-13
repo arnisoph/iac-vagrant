@@ -70,7 +70,7 @@ Vagrant.configure('2') do |cfg|
 
       # Providers
       config.vm.provider 'virtualbox' do |vb|
-        vb.gui = false
+        vb.gui = !get('headless', config_yaml, settings)
         #vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
         #vb.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
         vb.customize ['modifyvm', :id, '--hpet', 'on']
@@ -111,7 +111,7 @@ Vagrant.configure('2') do |cfg|
         src = 'assets/scripts/provision/provision.sh'
         dst = '/tmp/vagrant-provision-' + prov['name'] + '.sh $@'
         config.vm.provision 'file', source: src, destination: dst
-        config.vm.provision 'shell', inline: dst, args: [ prov['name'], osfam ]
+        config.vm.provision 'shell', inline: '/bin/sh ' + dst, args: [ prov['name'], osfam ]
       end
     end
   end

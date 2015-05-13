@@ -4,6 +4,7 @@
 * manage cpus & memory
 * provide env vars for provision scripts
 * rename share/ to shared/ everywhere
+* enable/disable gui (headless VM mode)
 
 v1.0.0 (2015-04-22)
 -------------------
