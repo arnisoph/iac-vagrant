@@ -21,11 +21,11 @@ Vagrant environment to develop & test Infrastructure as Code Tools
 Supported Platforms
 -------------------
 
-Host Operating Systems:
+Host Operating Systems (x64):
 
 * OS X 10.9
 * OS X 10.10
-* Windows 7 x64
+* Windows 7
 
 Vagrant providers:
 
