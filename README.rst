@@ -18,6 +18,20 @@ Vagrant environment to develop & test Infrastructure as Code Tools
     :local:
 
 
+Supported Platforms
+-------------------
+
+Host Operating Systems:
+
+* OS X 10.9
+* OS X 10.10
+* Windows 7 x64
+
+Vagrant providers:
+
+see assets/README.rst
+
+
 Requirements
 ------------
 
