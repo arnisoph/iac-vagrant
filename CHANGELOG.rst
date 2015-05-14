@@ -1,5 +1,8 @@
 [Unreleased] ([unreleased])
 ---------------------------
+
+v1.1.0 (2015-05-14)
+-------------------
 * disable default synced folder
 * manage cpus & memory
 * provide env vars for provision scripts
