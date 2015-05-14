@@ -109,9 +109,10 @@ Vagrant.configure('2') do |cfg|
         end
 
         src = 'assets/scripts/provision/provision.sh'
-        dst = '/tmp/vagrant-provision-' + prov['name'] + '.sh'
-        config.vm.provision 'file', source: src, destination: dst
-        config.vm.provision 'shell', inline: 'chmod u+x ' + dst + ' && ' + dst, args: [ prov['name'], osfam ]
+        #dst = '/tmp/vagrant-provision-' + prov['name'] + '.sh'
+        #config.vm.provision 'file', source: src, destination: dst
+        #config.vm.provision 'shell', inline: 'chmod u+x ' + dst
+        config.vm.provision 'shell', path: src, args: [ prov['name'], osfam ]
       end
     end
   end
