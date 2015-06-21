@@ -1,5 +1,6 @@
 [Unreleased] ([unreleased])
 ---------------------------
+* add linode provider support
 
 v1.1.1 (2015-06-21)
 -------------------

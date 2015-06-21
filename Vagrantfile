@@ -82,6 +82,25 @@ Vagrant.configure('2') do |cfg|
         vb.memory = memory if memory
       end
 
+      config.vm.provider :linode do |provider, override|
+        # Linode Provider tested with https://github.com/displague/vagrant-linode
+        override.ssh.private_key_path = get('linode_private_key_path', config_yaml, settings) || '~/.ssh/id_rsa'
+
+        provider.token = get('linode_token', config_yaml, settings)
+        provider.distribution = get('os', config_yaml, settings) || 'Debian 8'
+        provider.datacenter = get('datacenter', config_yaml, settings) || 'london'
+        provider.plan = get('plan', config_yaml, settings) || 'Linode 1024'
+        # provider.planid = <int>
+        # provider.paymentterm = <*1*,12,24>
+        # provider.datacenterid = <int>
+        # provider.image = <string>
+        # provider.imageid = <int>
+        provider.private_networking = get('linode_private_network', config_yaml, settings)
+        # provider.stackscript = <string>
+        # provider.stackscriptid = <int>
+        # provider.distributionid = <int>
+      end
+
       # Provision #TODO merge is not working at the moment (ordering broken) concat => push?
       global_provision = config_yaml['defaults']['provision'] || []
       provision = settings['provision'] || []
