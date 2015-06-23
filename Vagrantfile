@@ -124,7 +124,7 @@ Vagrant.configure('2') do |cfg|
           prov.fetch('env', []).each do |varname, varvalue|
             env_var_code += "\nexport ENV_#{prov['name']}_#{varname}=\"#{varvalue}\""
           end
-          config.vm.provision 'shell', inline: "echo -e \"#{env_var_code}\" > /tmp/vagrant-provision-#{prov['name']}-env.sh"
+          config.vm.provision 'shell', inline: "echo -e '#{env_var_code}' > /tmp/vagrant-provision-#{prov['name']}-env.sh"
         end
 
         src = 'assets/scripts/provision/provision.sh'
