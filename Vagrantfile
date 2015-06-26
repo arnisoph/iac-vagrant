@@ -101,6 +101,28 @@ Vagrant.configure('2') do |cfg|
         # provider.distributionid = <int>
       end
 
+      config.vm.provider :digital_ocean do |provider, override|
+        # vagrant plugin install vagrant-digitalocean
+        override.ssh.private_key_path = get('digitcalocean_private_key_path', config_yaml, settings) || '~/.ssh/id_rsa'
+        provider.token = get('digitalocean_token', config_yaml, settings)
+        provider.image = get('os', config_yaml, settings) || 'debian-8-x64'
+        provider.region = get('datacenter', config_yaml, settings) || 'fra1'
+        provider.private_networking = get('digitalocean_private_network', config_yaml, settings)
+        provider.ipv6 = get('digitalocean_ipv6', config_yaml, settings) || true
+        #provider.size
+      end
+
+      # TODO PoC:
+      #config.vm.provider :aws do |provider, override|
+      #  # vagrant plugin install vagrant-aws
+      #  provider.access_key_id = ''
+      #  provider.secret_access_key = ''
+      #  #provider.session_token = "SESSION TOKEN"
+      #  provider.keypair_name = 'aws-ec2-home'
+      #  provider.ami = ''
+      #  provider.region = 'eu-central-1'
+      #end
+
       # Provision #TODO merge is not working at the moment (ordering broken) concat => push?
       global_provision = config_yaml['defaults']['provision'] || []
       provision = settings['provision'] || []

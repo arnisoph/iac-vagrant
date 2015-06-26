@@ -1,9 +1,18 @@
 ---
 defaults:
+  # Linode
   linode_token: <LINODE_API_TOKEN>
   linode_private_network: true
-  domain: iacvagrant.local.arnoldbechtoldt.com
   base_box: https://github.com/bechtoldt/vagrant-linode/raw/master/box/linode.box
+  os: CentOS 7
+
+  # Digital Ocean
+  #digitalocean_token: <DO_API_V2_TOKEN>
+  #digitalocean_private_network: true
+  #base_box: https://github.com/bechtoldt/vagrant-digitalocean/raw/master/box/digital_ocean.box
+  #os: centos-7-0-x64
+
+  domain: iacvagrant.local.arnoldbechtoldt.com
   osfam: debian
   synced_folders:
     # Common folders
