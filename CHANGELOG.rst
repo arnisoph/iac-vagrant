@@ -1,6 +1,7 @@
 [Unreleased] ([unreleased])
 ---------------------------
 * add linode provider support
+* add digital ocean provider support
 
 v1.1.1 (2015-06-21)
 -------------------
