@@ -109,7 +109,7 @@ Vagrant.configure('2') do |cfg|
         provider.region = get('datacenter', config_yaml, settings) || 'fra1'
         provider.private_networking = get('digitalocean_private_network', config_yaml, settings)
         provider.ipv6 = get('digitalocean_ipv6', config_yaml, settings) || true
-        #provider.size
+        provider.size = get('digitalocean_size', config_yaml, settings) || '512mb'
       end
 
       # TODO PoC:
