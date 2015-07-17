@@ -29,7 +29,9 @@ Host Operating Systems (x64):
 
 Vagrant providers:
 
-see assets/README.rst
+* Linode (https://github.com/displague/vagrant-linode)
+* Digital Ocean (https://github.com/smdahlen/vagrant-digitalocean)
+* VirtualBox (>= 4.3.22, Oracle VM VirtualBox Extension Pack >= 4.3.22)
 
 
 Requirements

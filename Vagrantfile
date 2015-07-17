@@ -82,6 +82,47 @@ Vagrant.configure('2') do |cfg|
         vb.memory = memory if memory
       end
 
+      config.vm.provider :linode do |provider, override|
+        # Linode Provider tested with https://github.com/displague/vagrant-linode
+        override.ssh.private_key_path = get('linode_private_key_path', config_yaml, settings) || '~/.ssh/id_rsa'
+
+        provider.token = get('linode_token', config_yaml, settings)
+        provider.distribution = get('os', config_yaml, settings) || 'Debian 8'
+        provider.datacenter = get('datacenter', config_yaml, settings) || 'london'
+        provider.plan = get('plan', config_yaml, settings) || 'Linode 1024'
+        # provider.planid = <int>
+        # provider.paymentterm = <*1*,12,24>
+        # provider.datacenterid = <int>
+        # provider.image = <string>
+        # provider.imageid = <int>
+        provider.private_networking = get('linode_private_network', config_yaml, settings)
+        # provider.stackscript = <string>
+        # provider.stackscriptid = <int>
+        # provider.distributionid = <int>
+      end
+
+      config.vm.provider :digital_ocean do |provider, override|
+        # vagrant plugin install vagrant-digitalocean
+        override.ssh.private_key_path = get('digitcalocean_private_key_path', config_yaml, settings) || '~/.ssh/id_rsa'
+        provider.token = get('digitalocean_token', config_yaml, settings)
+        provider.image = get('os', config_yaml, settings) || 'debian-8-x64'
+        provider.region = get('datacenter', config_yaml, settings) || 'fra1'
+        provider.private_networking = get('digitalocean_private_network', config_yaml, settings)
+        provider.ipv6 = get('digitalocean_ipv6', config_yaml, settings) || true
+        provider.size = get('digitalocean_size', config_yaml, settings) || '512mb'
+      end
+
+      # TODO PoC:
+      #config.vm.provider :aws do |provider, override|
+      #  # vagrant plugin install vagrant-aws
+      #  provider.access_key_id = ''
+      #  provider.secret_access_key = ''
+      #  #provider.session_token = "SESSION TOKEN"
+      #  provider.keypair_name = 'aws-ec2-home'
+      #  provider.ami = ''
+      #  provider.region = 'eu-central-1'
+      #end
+
       # Provision #TODO merge is not working at the moment (ordering broken) concat => push?
       global_provision = config_yaml['defaults']['provision'] || []
       provision = settings['provision'] || []
@@ -105,7 +146,7 @@ Vagrant.configure('2') do |cfg|
           prov.fetch('env', []).each do |varname, varvalue|
             env_var_code += "\nexport ENV_#{prov['name']}_#{varname}=\"#{varvalue}\""
           end
-          config.vm.provision 'shell', inline: "echo -e \"#{env_var_code}\" > /tmp/vagrant-provision-#{prov['name']}-env.sh"
+          config.vm.provision 'shell', inline: "echo -e '#{env_var_code}' > /tmp/vagrant-provision-#{prov['name']}-env.sh"
         end
 
         src = 'assets/scripts/provision/provision.sh'

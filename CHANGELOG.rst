@@ -1,5 +1,11 @@
 [Unreleased] ([unreleased])
 ---------------------------
+* add linode provider support
+* add digital ocean provider support
+
+v1.1.1 (2015-06-21)
+-------------------
+* maintenance relase, updated submodules
 
 v1.1.0 (2015-05-14)
 -------------------
