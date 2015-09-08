@@ -1,5 +1,6 @@
 [Unreleased] ([unreleased])
 ---------------------------
+* make forwarded ports configurable (thanks to @johscheuer)
 
 v1.2.0 (2015-08-24)
 -------------------
