@@ -46,8 +46,11 @@ Vagrant.configure('2') do |cfg|
       end
 
       # Networking
-      #config.vm.network :forwarded_port, guest: 22, host: 2222 #TODO make this configurable
-
+      forward_ports = get('ports', config_yaml, settings) || {}
+      forward_ports.each do |port|
+        config.vm.network :forwarded_port, guest: port['guest'], host:  port['host']
+      end
+                           
       if settings.has_key?('ip')
         config.vm.network 'private_network', ip: settings['ip']
       else
