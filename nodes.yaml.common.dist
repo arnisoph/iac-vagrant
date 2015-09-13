@@ -4,10 +4,9 @@ defaults:
   base_box: DEV_Debian_78_salt_arbe_git-virtualbox-v0.4-4-gc6b98de.box
   base_box_basedir: ../../../vagrant-devenv/shared/boxes
   osfam: debian
+  assets_dir: ../vagrant-assets
   synced_folders:
     # Common folders
-    - src: assets/scripts/provision
-      dst: /vagrant/scripts
     - src: ../shared/misc
       dst: /vagrant/shared/misc
 

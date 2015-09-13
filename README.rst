@@ -47,9 +47,3 @@ Additional resources
 --------------------
 
 Please see https://github.com/bechtoldt/vagrant-devenv for some more bits of information.
-
-
-TODO
-----
-
-None
