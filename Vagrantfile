@@ -33,7 +33,7 @@ Vagrant.configure('2') do |cfg|
       synced_folders = config_yaml['defaults']['synced_folders'] || []
       synced_folders.concat(settings['synced_folders'] || [])
       osfam = get('osfam', config_yaml, settings)
-      assets_dir = get('assets_dir', config_yaml, settings) || 'assets'
+      assets_dir = get('assets_dir', config_yaml, settings) || '../vagrant-assets'
 
       config.vm.box = base_box
       config.vm.host_name = vm_id + '.' + domain
