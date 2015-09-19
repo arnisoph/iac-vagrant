@@ -1,5 +1,9 @@
 [Unreleased] ([unreleased])
 ---------------------------
+* remove assets submodule that should be added in the parent project (#3)
+
+v1.3.0 (2015-09-13)
+-------------------
 * make forwarded ports configurable (thanks to @johscheuer)
 
 v1.2.0 (2015-08-24)

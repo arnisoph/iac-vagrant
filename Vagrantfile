@@ -33,6 +33,7 @@ Vagrant.configure('2') do |cfg|
       synced_folders = config_yaml['defaults']['synced_folders'] || []
       synced_folders.concat(settings['synced_folders'] || [])
       osfam = get('osfam', config_yaml, settings)
+      assets_dir = get('assets_dir', config_yaml, settings) || '../vagrant-assets'
 
       config.vm.box = base_box
       config.vm.host_name = vm_id + '.' + domain
@@ -58,13 +59,20 @@ Vagrant.configure('2') do |cfg|
       end
 
       # Folders/ Sharing
+      assets_already_sycnced = false
       config.vm.synced_folder '.', '/vagrant', disabled: true
       synced_folders.each do |folder|
         src = folder['src']
-        src += "/#{osfam}" if folder['dst'].match(/\/scripts\/?/)
+        src += "/#{osfam}" if folder['dst'].match(/\/scripts\/?/) # assets dir
         config.vm.synced_folder(src, folder['dst'])
+        if folder['dst'] == '/vagrant/scripts'
+          assets_already_sycnced = true
+        end
       end
 
+      if !assets_already_sycnced
+        config.vm.synced_folder(assets_dir + '/scripts/provision/' + osfam, '/vagrant/scripts')
+      end
 
       # Plugins
       if Vagrant.has_plugin?('vagrant-cachier')
@@ -152,7 +160,7 @@ Vagrant.configure('2') do |cfg|
           config.vm.provision 'shell', inline: "echo -e '#{env_var_code}' > /tmp/vagrant-provision-#{prov['name']}-env.sh"
         end
 
-        src = 'assets/scripts/provision/provision.sh'
+        src = assets_dir + '/scripts/provision/provision.sh'
         #dst = '/tmp/vagrant-provision-' + prov['name'] + '.sh'
         #config.vm.provision 'file', source: src, destination: dst
         #config.vm.provision 'shell', inline: 'chmod u+x ' + dst

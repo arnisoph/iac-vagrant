@@ -4,9 +4,7 @@ defaults:
   base_box: DEV_Debian_78_salt_arbe_git-virtualbox-v0.4-4-gc6b98de.box
   base_box_basedir: ../../../vagrant-devenv/shared/boxes
   osfam: debian
-  synced_folders:
-    - src: assets/scripts/provision
-      dst: /vagrant/scripts
+  assets_dir: ../vagrant-assets
   provision:
     - name: basic
     - name: rex_install_git
