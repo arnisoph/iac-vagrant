@@ -32,7 +32,7 @@ Vagrant.configure('2') do |cfg|
       base_box = get('base_box', config_yaml, settings)
       synced_folders = config_yaml['defaults']['synced_folders'] || []
       synced_folders.concat(settings['synced_folders'] || [])
-      synced_folder_type = get('synced_folder_type', config_yaml, settings) || 'nfs'
+      synced_folder_type = get('synced_folder_type', config_yaml, settings) || 'default'
       osfam = get('osfam', config_yaml, settings)
       assets_dir = get('assets_dir', config_yaml, settings) || '../vagrant-assets'
 
