@@ -32,6 +32,7 @@ Vagrant.configure('2') do |cfg|
       base_box = get('base_box', config_yaml, settings)
       synced_folders = config_yaml['defaults']['synced_folders'] || []
       synced_folders.concat(settings['synced_folders'] || [])
+      synced_folder_type = get('synced_folder_type', config_yaml, settings) || 'nfs'
       osfam = get('osfam', config_yaml, settings)
       assets_dir = get('assets_dir', config_yaml, settings) || '../vagrant-assets'
 
@@ -60,11 +61,19 @@ Vagrant.configure('2') do |cfg|
 
       # Folders/ Sharing
       assets_already_sycnced = false
-      config.vm.synced_folder '.', '/vagrant', disabled: true
+      if synced_folder_type == 'nfs'
+        config.vm.synced_folder('.', '/vagrant', disabled: true, type: 'nfs', mount_options: ['rw', 'vers=3', 'tcp', 'fsc' ,'actimeo=1'])
+      else
+        config.vm.synced_folder('.', '/vagrant', disabled: true)
+      end
       synced_folders.each do |folder|
         src = folder['src']
         src += "/#{osfam}" if folder['dst'].match(/\/scripts\/?/) # assets dir
-        config.vm.synced_folder(src, folder['dst'])
+        if synced_folder_type == 'nfs'
+          config.vm.synced_folder(src, folder['dst'], type: 'nfs', mount_options: ['rw', 'vers=3', 'tcp', 'fsc' ,'actimeo=1'])
+        else
+          config.vm.synced_folder(src, folder['dst'])
+        end
         if folder['dst'] == '/vagrant/scripts'
           assets_already_sycnced = true
         end
