@@ -60,8 +60,8 @@ Vagrant.configure('2') do |cfg|
       end
 
       # SSH
-      if settings.has_key?('ssh')
-        ssh_config = get('ssh', config_yaml, settings)
+      ssh_config = get('ssh', config_yaml, settings) || {}
+      if ssh_config
         config.ssh.username = ssh_config['username']
         config.ssh.password = ssh_config['password']
       end
