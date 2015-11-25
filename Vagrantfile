@@ -59,6 +59,13 @@ Vagrant.configure('2') do |cfg|
         config.vm.network 'private_network', type: 'dhcp'
       end
 
+      # SSH
+      if settings.has_key?('ssh')
+        ssh_config = get('ssh', config_yaml, settings)
+        config.ssh.username = ssh_config['username']
+        config.ssh.password = ssh_config['password']
+      end
+
       # Folders/ Sharing
       assets_already_sycnced = false
       if synced_folder_type == 'nfs'

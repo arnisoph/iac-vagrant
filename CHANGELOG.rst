@@ -2,6 +2,7 @@
 ---------------------------
 * remove assets submodule that should be added in the parent project (#3)
 * optionally use NFS for synced_folders
+* make ssh connection configurable via nodes.yaml
 
 v1.3.0 (2015-09-13)
 -------------------
