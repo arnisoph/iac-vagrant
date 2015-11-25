@@ -66,7 +66,7 @@ Vagrant.configure('2') do |cfg|
         config.ssh.password = ssh_config['password']
       end
 
-      # Folders/ Sharing
+      # Shared Folders
       assets_already_sycnced = false
       if synced_folder_type == 'nfs'
         config.vm.synced_folder('.', '/vagrant', disabled: true, type: 'nfs', mount_options: ['rw', 'vers=3', 'tcp', 'fsc' ,'actimeo=1'])
@@ -107,6 +107,19 @@ Vagrant.configure('2') do |cfg|
         vb.cpus = cpus if cpus
         memory = get('memory', config_yaml, settings)
         vb.memory = memory if memory
+
+        # Local Storage
+        extra_storage_base_path = get('extra_storage_base_path', config_yaml, settings) || '/tmp'
+        extra_storage = get('extra_storage', config_yaml, settings) || []
+        count = 0
+        extra_storage.each do |disk|
+          disk_path = extra_storage_base_path + '/' + vm_id + '_disk' + count.to_s + '.vdi'
+          unless File.exist?(disk_path)
+            vb.customize ['createhd', '--filename', disk_path, '--size', disk['size'] || 5 * 1024]
+          end
+          vb.customize ['storageattach', :id, '--storagectl', 'IDE Controller', '--port', 1, '--device', count, '--type', 'hdd', '--medium', disk_path]
+          count += 1
+        end
       end
 
       config.vm.provider :linode do |provider, override|
