@@ -39,6 +39,7 @@ Vagrant.configure('2') do |cfg|
       synced_folder_type = get('synced_folder_type', config_yaml, settings) || 'default'
       osfam = get('osfam', config_yaml, settings)
       assets_dir = get('assets_dir', config_yaml, settings) || '../vagrant-assets'
+      ruby_host_os = RbConfig::CONFIG['host_os']
 
       config.vm.box = base_box
       config.vm.host_name = vm_id + '.' + domain
@@ -112,9 +113,9 @@ Vagrant.configure('2') do |cfg|
         cpus = get('cpus', config_yaml, settings)
         if cpus
           vb.cpus = cpus
-        elsif host =~ /darwin/
+        elsif ruby_host_os =~ /darwin/
           vb.cpus = `sysctl -n hw.ncpu`.to_i
-        elsif host =~ /linux/
+        elsif ruby_host_os =~ /linux/
           vb.cpus = `nproc`.to_i
         end
 
@@ -122,10 +123,10 @@ Vagrant.configure('2') do |cfg|
         memory = get('memory', config_yaml, settings)
         if memory
           vb.memory = memory
-        elsif host =~ /darwin/
+        elsif ruby_host_os =~ /darwin/
           # sysctl returns Bytes and we need to convert to MB
           vb.memory = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 4
-        elsif host =~ /linux/
+        elsif ruby_host_os =~ /linux/
           # meminfo shows KB and we need to convert to MB
           vb.memory = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 4
         end
