@@ -66,8 +66,9 @@ Vagrant.configure('2') do |cfg|
       # SSH
       ssh_config = get('ssh', config_yaml, settings) || {}
       if ssh_config
-        config.ssh.username = ssh_config['username']
-        config.ssh.password = ssh_config['password']
+        config.ssh.username = ssh_config['username'] if ssh_config.has_key?('username')
+        config.ssh.password = ssh_config['password'] if ssh_config.has_key?('password')
+        config.ssh.insert_key = ssh_config['insert_key'] if ssh_config.has_key?('insert_key')
       end
 
       # Shared Folders
