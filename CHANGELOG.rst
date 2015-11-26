@@ -4,6 +4,7 @@
 * optionally use NFS for synced_folders
 * make ssh connection configurable via nodes.yaml
 * make extra disks configurable
+* use all cores by default, use 1/4 of overall RAM
 
 v1.3.0 (2015-09-13)
 -------------------

@@ -7,6 +7,10 @@
 # * vagrant-cachier
 # * vagrant-vbguest
 #
+# Thanks to:
+#
+# * https://stefanwrobel.com/how-to-make-vagrant-performance-not-suck
+#
 require 'yaml'
 
 def get(key, global, node)
@@ -103,10 +107,27 @@ Vagrant.configure('2') do |cfg|
         vb.customize ['modifyvm', :id, '--hpet', 'on']
         vb.customize ['modifyvm', :id, '--ioapic', 'on']
 
+        # CPU Cores
         cpus = get('cpus', config_yaml, settings)
-        vb.cpus = cpus if cpus
+        if cpus
+          vb.cpus = cpus
+        elsif host =~ /darwin/
+          vb.cpus = `sysctl -n hw.ncpu`.to_i
+        elsif host =~ /linux/
+          vb.cpus = `nproc`.to_i
+        end
+
+        # Memory
         memory = get('memory', config_yaml, settings)
-        vb.memory = memory if memory
+        if memory
+          vb.memory = memory
+        elsif host =~ /darwin/
+          # sysctl returns Bytes and we need to convert to MB
+          vb.memory = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 4
+        elsif host =~ /linux/
+          # meminfo shows KB and we need to convert to MB
+          vb.memory = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 4
+        end
 
         # Local Storage
         extra_storage_base_path = get('extra_storage_base_path', config_yaml, settings) || '/tmp'
