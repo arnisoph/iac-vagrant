@@ -4,7 +4,6 @@
 # Useful vagrant plugins:
 #
 # * vagrant-notify
-# * vagrant-cachier
 # * vagrant-vbguest
 #
 # Thanks to:
@@ -94,11 +93,6 @@ Vagrant.configure('2') do |cfg|
 
       if !assets_already_sycnced
         config.vm.synced_folder(assets_dir + '/scripts/provision/' + osfam, '/vagrant/scripts')
-      end
-
-      # Plugins
-      if Vagrant.has_plugin?('vagrant-cachier')
-         config.cache.scope = :box
       end
 
       # Providers
