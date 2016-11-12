@@ -80,7 +80,7 @@ Vagrant.configure('2') do |cfg|
       end
       synced_folders.each do |folder|
         src = folder['src']
-        src += "/#{osfam}" if folder['dst'].match(/\/scripts\/?/) # assets dir
+        src += "/#{osfam}" if folder['dst'].match(/\/scripts\/?/) and File.exist?("#{folder['dst']}/#{osfam}") # assets dir
         if synced_folder_type == 'nfs'
           config.vm.synced_folder(src, folder['dst'], type: 'nfs', mount_options: ['rw', 'vers=3', 'tcp', 'fsc' ,'actimeo=1'])
         else
