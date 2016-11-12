@@ -186,8 +186,7 @@ Vagrant.configure('2') do |cfg|
       provision.concat(global_provision)
 
       provision.each do |prov|
-        case(prov['name'])
-        when 'saltstack_formulas'
+        if prov['name'] == 'saltstack_formulas'
           formulas = prov['formulas'] || {}
           formulas.each do |mod|
             src = mod['base_dir']
@@ -198,19 +197,11 @@ Vagrant.configure('2') do |cfg|
           end
         end
 
-        if prov.has_key?('env')
-          env_var_code = 'set -x'
-          prov.fetch('env', []).each do |varname, varvalue|
-            env_var_code += "\nexport ENV_#{prov['name']}_#{varname}=\"#{varvalue}\""
-          end
-          config.vm.provision 'shell', inline: "echo -e '#{env_var_code}' > /tmp/vagrant-provision-#{prov['name']}-env.sh"
-        end
-
         src = assets_dir + '/scripts/provision/provision.sh'
         #dst = '/tmp/vagrant-provision-' + prov['name'] + '.sh'
         #config.vm.provision 'file', source: src, destination: dst
         #config.vm.provision 'shell', inline: 'chmod u+x ' + dst
-        config.vm.provision 'shell', path: src, args: [ prov['name'], osfam ]
+        config.vm.provision 'shell', env: prov['env'] || {}, path: src, args: [ prov['name'], osfam ]
       end
     end
   end
